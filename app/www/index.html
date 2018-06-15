@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <!--link rel="stylesheet" type="text/css" href="css/index.css"-->
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.theme-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.inline-png-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.inline-svg-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.icons-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.structure-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="js/jquerymobile/jquery.mobile.external-png-1.4.5.min.css">
+    <title>Hello World</title>
+    <!--<script src="js/jquery-3.3.1.min.js" />-->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+
+</head>
+
+<body>
+    <section data-role="page">
+        <header data-role="header" data-position="fixed">
+            <h1>Cabeçalho</h1>
+        </header>
+        <div data-role="main" class="ui-content">
+            <div class="ui-grid-d center  ui-responsive">
+                <div data-role="collapsible" data-theme="b" data-content-theme="b" class="ui-block-a">
+
+                    <h4>Dados do Dispositivo</h4>
+
+                    <p id="device">
+                    </p>
+                </div>
+                <div data-role="collapsible" data-theme="b" data-content-theme="b" class="ui-block-b">
+                    <h4>Status da Bateria</h4>
+                    <p id="batteryStatus">
+                    </p>
+                </div>
+                <div data-role="collapsible" data-theme="b" data-content-theme="b" class="ui-block-c">
+                    <h4>Dados GPS</h4>
+                    <p id="geolocationInfo">
+                    </p>
+                </div>
+            </div>
+            <div class="ui-grid-d center  ui-responsive">
+                <div class="ui-grid-b">
+
+                    <div class="ui-block-a">
+                        <a href="#" id="btnAlert" class="ui-shadow ui-btn ui-corner-all">Alert</a>
+                    </div>
+
+                    <div class="ui-block-b">
+
+                        <a id="btnConfirm" class="ui-shadow ui-btn ui-corner-all">Confirm</a>
+
+                    </div>
+
+                    <div class="ui-block-c button-wrap">
+                        <a id="btnPrompt" class="ui-shadow ui-btn ui-corner-all">Alert Prompt</a>
+                    </div>
+                    <div class="ui-block-d">
+                        <a id="btnBeep" class="ui-shadow ui-btn ui-corner-all">Beep</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div data-role="panel" id="pnlGeolocationChanges">
+            <p id="geolocationInfoChanged">
+            </p>
+        </div>
+        <footer data-role="footer" data-position="fixed"></footer>
+    </section>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+
+</html>
