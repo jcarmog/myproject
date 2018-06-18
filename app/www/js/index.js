@@ -31,15 +31,21 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
+        console.log(navigator.vibrate);
+        window.addEventListener('filePluginIsReady', function() { console.log('File plugin is ready'); }, false);
         this.receivedEvent("deviceready");
         this.batteryInfo();
         this.geolocationInfo();
+        this.networkInfo();
         this.carregarBotoes();
         this.watchPosition();
+        this.vibration();
+        this.screenOrientation();
     },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+        StatusBar.backgroundColorByHexString("#C0C0C0");
         parentElement = document.getElementById(
             id
         );
@@ -99,6 +105,8 @@ var app = {
         var btnConfirm = document.getElementById("btnConfirm");
         var btnPrompt = document.getElementById("btnPrompt");
         var btnBeep = document.getElementById("btnBeep");
+        var btnAbrirCamera = document.getElementById("btnAbrirCamera");
+        var btnExibirArquivos = document.getElementById("btnExibirArquivos");
         btnAlert.addEventListener(
             "click",
             function() {
@@ -158,6 +166,51 @@ var app = {
             },
             false
         );
+        btnAbrirCamera.addEventListener("click", function() {
+            navigator.camera.getPicture(function(imageData) {
+                var image = document.getElementById('myimage');
+                image.src = imageData;
+            }, function(message) {
+                alert('Failed because: ' + message);
+            }, { quality: 50, targetWidth: 400, targetHeight: 400, allowEdit: true, correctOrientation: false });
+
+        }, false);
+        btnExibirArquivos.addEventListener("click", function() {
+            var lstArquivos = document.getElementById("lstArquivos");
+
+            var myPath = cordova.file.applicationDirectory; // We can use the default externalRootDirectory or use a path : file://my/custom/folder
+            alert(myPath);
+            window.resolveLocalFileSystemURL(myPath, function(dirEntry) {
+                var directoryReader = dirEntry.createReader();
+                directoryReader.readEntries(onSuccessCallback, onFailCallback);
+            });
+
+            function onSuccessCallback(entries) {
+                //alert(entries);
+                var html;
+                for (i = 0; i < entries.length; i++) {
+                    var row = entries[i];
+
+                    //alert(row.nativeURL + " - " + row.name);
+                    if (row.isDirectory) {
+                        // We will draw the content of the clicked folder
+                        html += '<li data-icon="shop" >++ ' + row.name + '</li>\n';
+                    } else {
+                        // alert the path of file
+                        html += '<li data-icon="bars" >-' + row.name + '</li>\n';
+                    }
+
+                }
+                //alert(html);
+                lstArquivos.innerHTML = html;
+                // $("#lstArquivos").trigger("updatelayout");
+            }
+
+            function onFailCallback() {
+                alert("erro======");
+            }
+
+        }, false);
     },
     watchPosition: function() {
         function onSuccess(position) {
@@ -169,7 +222,7 @@ var app = {
                 "Longitude: " +
                 position.coords.longitude +
                 "<br />" +
-                "<hr />" +
+                "<br />" +
                 element.innerHTML;
             $("#pnlGeolocationChanges").trigger("updatelayout");
 
@@ -186,7 +239,56 @@ var app = {
         var watchID = navigator.geolocation.watchPosition(onSuccess, onError, {
             timeout: 30000
         });
+    },
+    vibration: function() {
+        var btnVibrar = document.getElementById("btnVibrar");
+        var btnVibrarPadrao = document.getElementById("btnVibrarPadrao");
+        var btnVibrarParar = document.getElementById("btnVibrarParar");
+        btnVibrar.addEventListener("click", function() {
+            navigator.vibrate(3000);
+        }, false);
+        btnVibrarPadrao.addEventListener("click", function() {
+            navigator.vibrate([1000, 1000, 3000, 1000, 5000]);
+        }, false);
+        btnVibrarParar.addEventListener("click", function() {
+            navigator.vibrate(0);
+        }, false);
+    },
+    networkInfo: function() {
+        updateNetworkStatus();
+        document.addEventListener("online", updateNetworkStatus, false);
+        document.addEventListener("offline", updateNetworkStatus, false);
+
+        function updateNetworkStatus() {
+            var networkState = navigator.connection.type;
+            var states = {};
+            states[Connection.UNKNOWN] = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI] = 'WiFi connection';
+            states[Connection.CELL_2G] = 'Cell 2G connection';
+            states[Connection.CELL_3G] = 'Cell 3G connection';
+            states[Connection.CELL_4G] = 'Cell 4G connection';
+            states[Connection.CELL] = 'Cell generic connection';
+            states[Connection.NONE] = 'No network connection';
+            if (networkState !== Connection.NONE) {
+                document.getElementById("networkInfo").innerHTML = states[networkState];
+            } else {
+                document.getElementById("networkInfo").innerHTML = "Você está offline";
+            }
+        }
+    },
+    screenOrientation: function() {
+        document.getElementById("screenOrientation").innerHTML = screen.orientation.type;
+        //screen.orientation.lock('portrait');
+
+        // allow user rotate
+        screen.orientation.unlock();
+        window.addEventListener("orientationchange", function() {
+            document.getElementById("screenOrientation").innerHTML = screen.orientation.type;
+            console.log(screen.orientation.type); // e.g. portrait
+        });
     }
+
 };
 
 function getDateFromTimestamp(valor) {
@@ -195,15 +297,15 @@ function getDateFromTimestamp(valor) {
         "Jan",
         "Feb",
         "Mar",
-        "Apr",
-        "May",
+        "Abr",
+        "Mai",
         "Jun",
         "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        "Ago",
+        "Set",
+        "Out",
         "Nov",
-        "Dec"
+        "Dez"
     ];
     var year = a.getFullYear();
     var month = months[a.getMonth()];
@@ -211,7 +313,6 @@ function getDateFromTimestamp(valor) {
     var hour = a.getHours();
     var min = a.getMinutes() < 10 ? "0" + a.getMinutes() : a.getMinutes();
     var sec = a.getSeconds() < 10 ? "0" + a.getSeconds() : a.getSeconds();
-    var sec = a.getSeconds();
     var time =
         date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
     return time;
