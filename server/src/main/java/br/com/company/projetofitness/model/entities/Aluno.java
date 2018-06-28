@@ -5,6 +5,7 @@
  */
 package br.com.company.projetofitness.model.entities;
 
+import br.com.company.projetofitness.model.beans.SituacaoCadastro;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -28,15 +29,20 @@ public class Aluno implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", length = 100)
     private String nome;
 
     @Column(name = "data_nascimento")
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
-    @Column(name = "email")
+    @Column(name = "email",length = 100)
     private String email;
+    
+    @Column(name = "cpf",length = 11)
+    private String cpf;
+    
+    private SituacaoCadastro situacao;
 
     public int getId() {
         return id;

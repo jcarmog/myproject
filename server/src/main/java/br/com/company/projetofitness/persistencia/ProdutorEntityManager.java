@@ -5,50 +5,35 @@
  */
 package br.com.company.projetofitness.persistencia;
 
+import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 
 /**
  *
  * @author josecarmo
  */
-public class ProdutorEntityManager {
-
-    @Produces
-    @ApplicationScoped
-    @Geral
-    public EntityManagerFactory criarFactory() {
-        return Persistence.createEntityManagerFactory("dbstrongerPU");
-    }
-/*
-    @Produces
-    @ApplicationScoped @Infra
-    public EntityManagerFactory criarFactoryInfra() {
-        return Persistence.createEntityManagerFactory("infra.pu");
-    }
-*/
-    @Produces
-    @Geral
+@ApplicationScoped
+public class ProdutorEntityManager implements Serializable {
+    
+ 
+    @PersistenceUnit
+    private EntityManagerFactory factory;
+ 
     @RequestScoped
-    public EntityManager criarEntityManager(@Geral EntityManagerFactory factory) {
-        return factory.createEntityManager();
-    }
-    /*
     @Produces
-    @RequestScoped @Infra
-    public EntityManager criarEntityManagerInfra(@Infra EntityManagerFactory factory) {
+    public EntityManager createEntityManager() {
         return factory.createEntityManager();
     }
-*/
-
-    public void fecharEntityManager(@Disposes @Geral EntityManager em) {
-        em.close();
+ 
+    public void closeEntityManager(@Disposes EntityManager manager) {
+        if (manager.isOpen()) {
+            manager.close();
+        }
     }
-
 }

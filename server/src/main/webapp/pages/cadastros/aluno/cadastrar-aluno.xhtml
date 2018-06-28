@@ -18,19 +18,47 @@ and open the template in the editor.
             </h:head>
             <h:body>
                 <p:panel>
-                    <h:form id="frmTipoOrgao" prependId="false">
+                    <h:form id="form" prependId="false">
 
-                        <p:growl id="messages" autoUpdate="true" sticky="true" /> 
-                        <p:panel>
+                        <p:growl id="msgs" autoUpdate="true" sticky="true" /> 
+                        <h:inputHidden value="#{cadastrarAluno.aluno.id}"/>
+                        <p:panelGrid id="pnlDados" columns="2">
+
                             <h:outputText value="Nome: " />
                             <p:inputText value="#{cadastrarAluno.aluno.nome}" />
                             <h:outputText value="email: " />
                             <p:inputText value="#{cadastrarAluno.aluno.email}" />
                             <h:outputText value="Data Nascimento: " />
                             <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}"  />
-                            <p:commandButton action="#{cadastrarAluno.salvar()}" value="Salvar" />
-                        </p:panel>
-                        
+                            <f:facet name="footer">
+                                <p:commandButton action="#{cadastrarAluno.salvar()}" value="Salvar"  update="dtAlunos" />
+                                <p:commandButton action="#{cadastrarAluno.excluir()}" rendered="#{cadastrarAluno.aluno.id gt 0}" value="Excluir"  update="form" />
+                                <p:commandButton action="#{cadastrarAluno.limparCampos()}" rendered="#{cadastrarAluno.aluno.id gt 0}" value="Limpar Campos"  update="form" />
+
+                            </f:facet>
+                        </p:panelGrid>
+                        <br/>
+                        <p:dataTable id="dtAlunos" var="aluno" value="#{cadastrarAluno.alunos}" selectionMode="single" selection="#{cadastrarAluno.aluno}" rowKey="#{aluno.id}">
+                            <p:ajax event="rowSelect" listener="#{cadastrarAluno.onRowSelect}" update="msgs,form" />
+                            <p:ajax event="rowUnselect" listener="#{cadastrarAluno.onRowUnselect}" update="msgs,form" />
+                            <p:column headerText="Id">
+                                <h:outputText value="#{aluno.id}" />
+                            </p:column>
+
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{aluno.nome}" />
+                            </p:column>
+
+                            <p:column headerText="Email">
+                                <h:outputText value="#{aluno.email}" />
+                            </p:column>
+
+                            <p:column headerText="Data Nascimento">
+                                <h:outputText value="#{aluno.dataNascimento}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
 
                     </h:form>
                 </p:panel>
