@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+            <h:head>
+                <title>TODO supply a title</title>
+                <meta name="viewport" content="width=device-width"/>
+            </h:head>
+            <h:body>
+                <p:panel>
+                    <h:form id="frmTipoOrgao" prependId="false">
+
+                        <p:growl id="messages" autoUpdate="true" sticky="true" /> 
+                        <p:panel>
+                            <h:outputText value="Nome: " />
+                            <p:inputText value="#{cadastrarAluno.aluno.nome}" />
+                            <h:outputText value="email: " />
+                            <p:inputText value="#{cadastrarAluno.aluno.email}" />
+                            <h:outputText value="Data Nascimento: " />
+                            <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}"  />
+                            <p:commandButton action="#{cadastrarAluno.salvar()}" value="Salvar" />
+                        </p:panel>
+                        
+
+                    </h:form>
+                </p:panel>
+
+            </h:body>
+        </ui:define>
+    </ui:composition>
+</html>
