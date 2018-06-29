@@ -13,13 +13,11 @@ and open the template in the editor.
     <ui:composition template="/pages/template/principal.xhtml">
         <ui:define name="corpo">
             <h:head>
-                <title>TODO supply a title</title>
+                <title>Cadastro de Aluno</title>
                 <meta name="viewport" content="width=device-width"/>
             </h:head>
             <h:body>  
                 <h:form id="form" prependId="false">
-
-
                     <p:panel id="pnlDados" >
                         <p:growl id="msgs" autoUpdate="true" sticky="true" /> 
                         <h:inputHidden value="#{cadastrarAluno.aluno.id}"/>
@@ -28,30 +26,32 @@ and open the template in the editor.
                                 <h:panelGrid columns="3" columnClasses="grid,grid,grid">
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="CPF:" />
-                                        <p:inputText value="#{cadastrarAluno.aluno.cpf}" />
+                                        <p:inputMask id="cpf" value="#{cadastrarAluno.aluno.cpf}" mask="999.999.999-99"/>
                                         <h:outputText value="Nome: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.nome}"  styleClass="outputLabel"/>
+                                        <p:inputText value="#{cadastrarAluno.aluno.nome}" />
                                         <h:outputText value="Email: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.email}"  styleClass="outputLabel"/>
+                                        <p:inputText value="#{cadastrarAluno.aluno.email}" required="true" validatorMessage="#{cadastrarAluno.aluno.email} não é válido." >
+                                            <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                        </p:inputText>
                                         <h:outputText value="Data Nascimento: " />
                                         <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}" />
 
                                     </h:panelGrid>
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="CEP:" />
-                                        <p:inputText value="#{cadastrarAluno.aluno.cep}"  />
+                                        <p:inputMask id="cep" value="#{cadastrarAluno.aluno.cep}" mask="99.999-999"/>
                                         <h:outputText value="Endereço:" />
-                                        <p:inputText value="#{cadastrarAluno.aluno.logradouro}" styleClass="outputLabel"  />
+                                        <p:inputText value="#{cadastrarAluno.aluno.logradouro}" />
                                         <h:outputText value="Número: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.numero}"  styleClass="outputLabel"/>
+                                        <p:inputText value="#{cadastrarAluno.aluno.numero}"/>
                                         <h:outputText value="Complemento: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.complemento}" styleClass="outputLabel" />
+                                        <p:inputText value="#{cadastrarAluno.aluno.complemento}" />
                                     </h:panelGrid>
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="Telefone: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.telefone}"  styleClass="outputLabel" />
+                                        <p:inputMask id="telefone" value="#{cadastrarAluno.aluno.telefone}" mask="(99) 9999-9999"/>
                                         <h:outputText value="Celular: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.celular}" styleClass="outputLabel" />
+                                        <p:inputMask id="celular" value="#{cadastrarAluno.aluno.celular}" mask="(99) 99999-9999"/>
                                     </h:panelGrid>
                                 </h:panelGrid>
                             </p:panel>

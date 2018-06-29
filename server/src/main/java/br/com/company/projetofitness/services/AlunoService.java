@@ -6,6 +6,7 @@
 package br.com.company.projetofitness.services;
 
 import br.com.company.projetofitness.model.entities.Aluno;
+import br.com.company.projetofitness.util.Util;
 import java.util.List;
 import javax.inject.Named;
 
@@ -20,6 +21,10 @@ public class AlunoService extends AbstractService<Aluno> {
     public Aluno salvar(Aluno novo) {
         em.getTransaction().begin();
         if (em.isOpen()) {
+            novo.setCep(Util.removerMascara(novo.getCep()));
+            novo.setTelefone(Util.removerMascara(novo.getTelefone()));
+            novo.setCelular(Util.removerMascara(novo.getCelular()));
+            novo.setCpf(Util.removerMascara(novo.getCpf()));
             em.persist(novo);
         }
         em.getTransaction().commit();
@@ -31,6 +36,10 @@ public class AlunoService extends AbstractService<Aluno> {
         Aluno a;
         try {
             em.getTransaction().begin();
+            altera.setCep(Util.removerMascara(altera.getCep()));
+            altera.setTelefone(Util.removerMascara(altera.getTelefone()));
+            altera.setCelular(Util.removerMascara(altera.getCelular()));
+            altera.setCpf(Util.removerMascara(altera.getCpf()));
             a= em.merge(altera);
             em.getTransaction().commit();
             
