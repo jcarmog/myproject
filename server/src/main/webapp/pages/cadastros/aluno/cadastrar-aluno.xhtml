@@ -23,30 +23,30 @@ and open the template in the editor.
                         <h:inputHidden value="#{cadastrarAluno.aluno.id}"/>
                         <p:panelGrid columns="2" columnClasses="label,value">
                             <p:panel>
-                                <h:panelGrid columns="3" columnClasses="grid,grid,grid">
+                                <h:panelGrid columns="2" columnClasses="grid,grid">
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="CPF:" />
-                                        <p:inputMask id="cpf" value="#{cadastrarAluno.aluno.cpf}" mask="999.999.999-99"/>
+                                        <p:inputMask id="cpf" value="#{cadastrarAluno.aluno.cpf}" mask="999.999.999-99" size="10"/>
                                         <h:outputText value="Nome: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.nome}" />
+                                        <p:inputText value="#{cadastrarAluno.aluno.nome}" maxlength="100" size="50" />
                                         <h:outputText value="Email: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.email}" required="true" validatorMessage="#{cadastrarAluno.aluno.email} não é válido." >
+                                        <p:inputText value="#{cadastrarAluno.aluno.email}" required="true" maxlength="100" size="30" validatorMessage="#{cadastrarAluno.aluno.email} não é válido." >
                                             <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                                         </p:inputText>
                                         <h:outputText value="Data Nascimento: " />
-                                        <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}" />
+                                        <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}" size="10" />
 
-                                    </h:panelGrid>
-                                    <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="CEP:" />
-                                        <p:inputMask id="cep" value="#{cadastrarAluno.aluno.cep}" mask="99.999-999"/>
+                                        <p:inputMask id="cep" value="#{cadastrarAluno.aluno.cep}" mask="99.999-999" size="10"/>
                                         <h:outputText value="Endereço:" />
-                                        <p:inputText value="#{cadastrarAluno.aluno.logradouro}" />
+                                        <p:inputText value="#{cadastrarAluno.aluno.logradouro}" maxlength="100" size="50"/>
                                         <h:outputText value="Número: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.numero}"/>
+                                        <p:inputText value="#{cadastrarAluno.aluno.numero}" maxlength="5" size="5"/>
                                         <h:outputText value="Complemento: " />
                                         <p:inputText value="#{cadastrarAluno.aluno.complemento}" />
+
                                     </h:panelGrid>
+
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="Telefone: " />
                                         <p:inputMask id="telefone" value="#{cadastrarAluno.aluno.telefone}" mask="(99) 9999-9999"/>
@@ -65,12 +65,15 @@ and open the template in the editor.
                         <p:dataTable id="dtAlunos" var="aluno" value="#{cadastrarAluno.alunos}" selectionMode="single" selection="#{cadastrarAluno.selectedAluno}" rowKey="#{aluno.id}">
                             <p:ajax event="rowSelect" listener="#{cadastrarAluno.onRowSelect}" update="pnlDados" />
                             <p:ajax event="rowUnselect" listener="#{cadastrarAluno.onRowUnselect}" update="pnlDados" />
-                            <p:column headerText="Id" sortBy="#{aluno.id}">
-                                <h:outputText value="#{aluno.id}" />
-                            </p:column>
 
+                            <p:column headerText="cpf" sortBy="#{aluno.cpf}">
+                                <h:outputText value="#{aluno.cpf}" converter="#{CPFCPNJConverter}" />
+                            </p:column>
                             <p:column headerText="Nome" sortBy="#{aluno.nome}">
                                 <h:outputText value="#{aluno.nome}"  />
+                            </p:column>
+                            <p:column headerText="Telefone" sortBy="#{aluno.celular}">
+                                <h:outputText value="#{aluno.celular}"/>
                             </p:column>
 
                             <p:column headerText="Email">
