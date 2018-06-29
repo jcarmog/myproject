@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -30,8 +31,9 @@ public class CadastrarAluno extends PrincipalView {
     @Inject
     private Aluno aluno;
     private Aluno selectedAluno;
-
     private List<Aluno> alunos;
+    
+    private boolean skip;
 
     @PostConstruct
     public void init() {
@@ -78,6 +80,15 @@ public class CadastrarAluno extends PrincipalView {
 
     public void onRowSelect(UnselectEvent event) {
         aluno = (Aluno) event.getObject();
+    }
+
+    public String onFlowProcess(FlowEvent event) {
+        if (skip) {
+            skip = false;   //reset in case user goes back
+            return "confirm";
+        } else {
+            return event.getNewStep();
+        }
     }
 
     /**
