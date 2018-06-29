@@ -8,8 +8,6 @@ package br.com.company.projetofitness.services;
 import br.com.company.projetofitness.model.entities.Aluno;
 import java.util.List;
 import javax.inject.Named;
-import javax.persistence.Query;
-import org.hibernate.Criteria;
 
 /**
  *
@@ -35,6 +33,7 @@ public class AlunoService extends AbstractService<Aluno> {
             em.getTransaction().begin();
             a= em.merge(altera);
             em.getTransaction().commit();
+            
             return a;
         } catch (Exception e) {
             throw e;
@@ -46,7 +45,7 @@ public class AlunoService extends AbstractService<Aluno> {
     public boolean excluir(Aluno exclui) {
         try {
             em.getTransaction().begin();
-            em.remove(exclui);
+            em.remove(em.getReference(Aluno.class, exclui.getId()));
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {

@@ -94,4 +94,34 @@ public class Aluno implements Serializable {
         this.email = email;
     }
 
+    /**
+     * @return the cpf
+     */
+    public String getCpf() {
+        return cpf;
+    }
+
+    /**
+     * @param cpf the cpf to set
+     */
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    /**
+     * @return the situacao
+     */
+    public SituacaoCadastro getSituacao() {
+        return situacao;
+    }
+
+    /**
+     * @param situacao the situacao to set
+     */
+    public void setSituacao(SituacaoCadastro situacao) {
+        this.situacao = situacao;
+    }
+    
+    
+
 }

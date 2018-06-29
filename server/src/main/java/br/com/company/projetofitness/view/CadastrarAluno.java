@@ -27,18 +27,20 @@ public class CadastrarAluno extends PrincipalView {
 
     @Inject
     private AlunoService alunoService;
-
     @Inject
     private Aluno aluno;
-  
+    private Aluno selectedAluno;
+
     private List<Aluno> alunos;
 
     @PostConstruct
     public void init() {
         alunos = alunoService.listarTodos();
         System.out.println("View carregada");
+        //limparCampos();
     }
 
+    @Transactional
     public void salvar() {
         try {
             if (aluno.getId() == 0) {
@@ -105,6 +107,14 @@ public class CadastrarAluno extends PrincipalView {
 
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
+    }
+
+    public Aluno getSelectedAluno() {
+        return selectedAluno;
+    }
+
+    public void setSelectedAluno(Aluno selectedAluno) {
+        this.selectedAluno = selectedAluno;
     }
 
 }

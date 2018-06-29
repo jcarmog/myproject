@@ -5,6 +5,7 @@
  */
 package br.com.company.projetofitness.view;
 
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jcarmo
  */
 @Named
-public class PrincipalView {
+public class PrincipalView implements Serializable{
     private FacesMessage msg;
     
     protected void addMensagem(Object o, FacesMessage.Severity s) {
