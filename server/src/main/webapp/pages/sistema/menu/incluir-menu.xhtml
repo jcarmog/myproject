@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+
+            <h:head>
+                <title>Cadastro de Menu</title>
+                <style type="text/css">
+                    #messages{
+                        font-size: 9px;
+                    }
+                </style>
+            </h:head>
+            <h:body>
+                <h:form  prependId="false" id="form">
+                    <p:growl id="messages" showDetail="true" autoUpdate="true"/> 
+                    <p:accordionPanel rendered="#{facesContext.messages.hasNext()}">
+                        <p:tab title="StackTrace">
+
+                        </p:tab>
+                    </p:accordionPanel>
+
+                    <p:panel id="painelCadastro"  header="Cadastro de Menu">
+                        <table>
+                            <tr>
+                                <td>Nome:</td>
+                                <td>
+                                    <h:inputHidden  value="#{cadastroMenuView.menu.id}"/>
+                                    <p:inputText value="#{cadastroMenuView.menu.nome}" /></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>Ordem:</td>
+                                <td><p:inputText value="#{cadastroMenuView.menu.ordemExibicao}" /></td>
+                            </tr>
+
+                        </table>
+                        <p:commandButton onclick="PF('confirmationAlt').show();" type="button" rendered="#{cadastroMenuView.menu.id eq 0}" value="Salvar" update=":form:painelCadastro,:form:menus" />
+                        <p:commandButton onclick="PF('confirmationAlt').show();" type="button" rendered="#{cadastroMenuView.menu.id gt 0}" value="Alterar" update=":form:painelCadastro,:form:menus"/>
+                        <p:commandButton onclick="PF('confirmationExc').show();" type="button" rendered="#{cadastroMenuView.menu.id gt 0}" value="Excluir" update=":form:painelCadastro,:form:menus"/>
+                        <p:commandButton action="#{cadastroMenuView.limparCampos()}" type="button" rendered="#{cadastroMenuView.menu.id gt 0}" value="Limpar Campos" update=":form:painelCadastro,:form:menus"/>
+                    </p:panel>
+
+
+                    <p:dataTable id="menus" var="menu" value="#{cadastroMenuView.menus}" paginator="true" rows="10" 
+                                 selection="#{cadastroMenuView.selectedMenu}" selectionMode="single" rowKey="#{menu.id}" >
+
+                        <p:ajax event="rowSelect" listener="#{cadastroMenuView.onRowSelect}" update=":form:painelCadastro"/>
+                        <p:ajax event="rowUnselect" listener="#{cadastroMenuView.onRowUnselect}" update=":form:painelCadastro" />
+
+                        <p:column headerText="Codigo">
+                            #{menu.id}
+                        </p:column>
+
+                        <p:column headerText="Menu">
+                            #{menu.nome}
+                        </p:column>
+                        <p:column headerText="Ordem">
+                            #{menu.ordemExibicao}
+                        </p:column>
+                    
+
+                    </p:dataTable>
+
+                    <p:confirmDialog id="confirmDialogAlterar" message="Confirma a alteração dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationAlt">
+
+                        <p:commandButton id="confirmAlt" value="Sim" update="messages,messages,:form:painelCadastro,:form:menus" oncomplete="confirmationAlt.hide()"
+                                         actionListener="#{cadastroMenuView.salvar}" />
+                        <p:commandButton id="declineAlt" value="Não" onclick="PF('confirmationAlt').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+                    <p:confirmDialog id="confirmDialogExcluir" message="Confirma a exclusão dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationExc">
+
+                        <p:commandButton id="confirmExc" value="Sim" update="messages,messages,:form:painelCadastro,:form:menus" oncomplete="confirmationExc.hide()"
+                                         actionListener="#{cadastroMenuView.excluir}" />
+                        <p:commandButton id="declineExc" value="Não" onclick="PF('confirmationExc').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+                </h:form>
+
+
+            </h:body>
+
+        </ui:define>
+    </ui:composition>
+</html>

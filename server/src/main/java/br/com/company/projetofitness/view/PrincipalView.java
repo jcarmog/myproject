@@ -6,6 +6,7 @@
 package br.com.company.projetofitness.view;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -13,14 +14,17 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
  * @author jcarmo
  */
 @Named
-public class PrincipalView implements Serializable{
+public abstract class PrincipalView implements Serializable{
     private FacesMessage msg;
+    private String nomeFuncao;
     
     protected void addMensagem(Object o, FacesMessage.Severity s) {
         String mensagem = "";
@@ -32,13 +36,13 @@ public class PrincipalView implements Serializable{
                 sb.append(st.toString()).append("\n");
 
             }
-            msg = new FacesMessage(s, e.getMessage(), sb.toString());
+            setMsg(new FacesMessage(s, e.getMessage(), sb.toString()));
         } else {
             mensagem = o.toString();
-            msg = new FacesMessage(s, mensagem, mensagem);
+            setMsg(new FacesMessage(s, mensagem, mensagem));
         }
 
-        FacesContext.getCurrentInstance().addMessage("Mensagem", msg);
+        FacesContext.getCurrentInstance().addMessage("Mensagem", getMsg());
     }
     /**
      * @return the msg
@@ -79,5 +83,25 @@ public class PrincipalView implements Serializable{
     public String getApplicationPath() {
         return getServletContext().getContextPath();
     }
+    /**
+     * @return the nomeFuncao
+     */
+    public String getNomeFuncao() {
+        return nomeFuncao;
+    }
+
+    /**
+     * @param nomeFuncao the nomeFuncao to set
+     */
+    public void setNomeFuncao(String nomeFuncao) {
+        this.nomeFuncao = nomeFuncao;
+    }
+    
+    @PostConstruct
+    public abstract void init();
+    public abstract void limparCampos();
+    public abstract void onRowSelect(SelectEvent event);
+    public abstract void onRowUnselect(UnselectEvent event);
+
     
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+            <h:head>
+                <title>Configurar Permissões de Acesso</title>
+                <style type="text/css">
+                    #messages{
+                        font-size: 9px;
+                    }
+                </style>
+            </h:head>
+            <h:form id="formAssociaMenuPerfil"  prependId="false">
+                <p:growl id="messages" showDetail="true" autoUpdate="true" /> 
+                <p:panel header="Cadastro de Perfis de Usuários">
+                    <table>
+                        <tr>
+                            <td>Perfil:</td>
+                            <td><p:selectOneMenu value="#{associarMenuPerfilView.selectedPerfil}" converter="#{perfilConverter}">
+                                    <p:ajax update=":formAssociaMenuPerfil:pickList" listener="#{associarMenuPerfilView.onChangeMenu}">
+                                        <f:converter binding="#{perfilConverter}"/>
+                                    </p:ajax>
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItems value="#{associarMenuPerfilView.perfis}" var="perfil"
+                                                   itemLabel="#{perfil.descricao}" itemValue="#{perfil}"/>
+                                </p:selectOneMenu></td>
+                        </tr>
+                        <tr>
+                            <td>Selecione os menus:</td>
+                            <td><p:pickList id="pickList" value="#{associarMenuPerfilView.listModel}"  
+                                            var="item"
+                                            itemLabel="#{item.nome}"
+                                            itemValue="#{item.id}" >
+                                    <f:facet name="sourceCaption">Disponíveis</f:facet>
+                                    <f:facet name="targetCaption">Selecionado(s)</f:facet>
+                                </p:pickList>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <p:commandButton actionListener="#{associarMenuPerfilView.salvar}" value="Salvar" update=":formAssociaMenuPerfil"/>
+                </p:panel>
+
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.hibernate.annotations.ForeignKey;
 
@@ -22,6 +23,10 @@ import org.hibernate.annotations.ForeignKey;
  */
 @Entity
 @Table(name="tb_cidade")
+@NamedQuery(
+    name="listarCidadesPorEstado",
+    query="SELECT c FROM Cidade c WHERE c.uf.id = :id_uf order by nome"
+)
 public class Cidade implements Serializable{
     
     @Id

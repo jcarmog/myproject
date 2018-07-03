@@ -6,6 +6,8 @@
 package br.com.company.projetofitness.services;
 
 import br.com.company.projetofitness.model.entities.Aluno;
+import br.com.company.projetofitness.model.entities.Pessoa;
+import br.com.company.projetofitness.model.entities.Professor;
 import br.com.company.projetofitness.util.Util;
 import java.util.List;
 import javax.inject.Named;
@@ -15,10 +17,11 @@ import javax.inject.Named;
  * @author jose
  */
 @Named
-public class AlunoService extends AbstractService<Aluno> {
+public class PessoaService extends AbstractService<Pessoa> {
 
     @Override
-    public Aluno salvar(Aluno novo) {
+    public Pessoa salvar(Pessoa novo) {
+
         em.getTransaction().begin();
         if (em.isOpen()) {
             novo.setCep(Util.removerMascara(novo.getCep()));
@@ -32,29 +35,30 @@ public class AlunoService extends AbstractService<Aluno> {
     }
 
     @Override
-    public Aluno alterar(Aluno altera) {
-        Aluno a;
+    public Pessoa alterar(Pessoa altera) {
+        Pessoa a;
         try {
+
             em.getTransaction().begin();
             altera.setCep(Util.removerMascara(altera.getCep()));
             altera.setTelefone(Util.removerMascara(altera.getTelefone()));
             altera.setCelular(Util.removerMascara(altera.getCelular()));
             altera.setCpf(Util.removerMascara(altera.getCpf()));
-            a= em.merge(altera);
+            a = em.merge(altera);
             em.getTransaction().commit();
-            
+
             return a;
         } catch (Exception e) {
             throw e;
         }
-        
+
     }
 
     @Override
-    public boolean excluir(Aluno exclui) {
+    public boolean excluir(Pessoa exclui) {
         try {
             em.getTransaction().begin();
-            em.remove(em.getReference(Aluno.class, exclui.getId()));
+            em.remove(em.getReference(Pessoa.class, exclui.getId()));
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
@@ -64,13 +68,29 @@ public class AlunoService extends AbstractService<Aluno> {
     }
 
     @Override
-    public List<Aluno> listarTodos() {
-        return (List<Aluno>) em.createQuery("from Aluno").getResultList();
+    public List<Pessoa> listarTodos() {
+        return (List<Pessoa>) em.createQuery("from Pessoa").getResultList();
+    }
+
+    public List<Aluno> listarAlunos() {
+        return (List<Aluno>) em.createNamedQuery("listarTodosAlunos").getResultList();
+    }
+
+    public Aluno retornarAlunoPorId(int id) {
+        return (Aluno) em.find(Aluno.class, id);
+    }
+
+    public List<Professor> listarProfessores() {
+        return (List<Professor>) em.createNamedQuery("listarTodosProfessores").getResultList();
+    }
+
+    public Professor retornarProfessorPorId(int id) {
+        return (Professor) em.find(Professor.class, id);
     }
 
     @Override
-    public Aluno retornarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Pessoa retornarPorId(int id) {
+        return em.find(Pessoa.class, id);
     }
 
 }

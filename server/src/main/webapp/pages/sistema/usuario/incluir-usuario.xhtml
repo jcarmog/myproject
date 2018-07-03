@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <ui:composition template="/template/principal.xhtml">
+        <ui:define name="corpo">
+
+            <h:form id="formUsuario"  prependId="false">
+                <p:growl id="messages" showDetail="true" autoUpdate="true"/> 
+                <p:panel  header="Cadastro de Usuários" id="painelUsuario">
+                    <table>
+                        <tr>
+                            <td>Nome:</td>
+                            <td><h:inputHidden value="#{cadastrarUsuarioView.usuario.codigo}"/>
+                                <p:inputText value="#{cadastrarUsuarioView.usuario.nome}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Login:</td>
+                            <td><p:inputText value="#{cadastrarUsuarioView.usuario.apelido}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><p:inputText value="#{cadastrarUsuarioView.usuario.email}" /></td>
+                        </tr>
+                        <tr>
+                            <td>Perfil:</td>
+                            <td><p:selectOneMenu id="selectPerfil" value="#{cadastrarUsuarioView.perfil.id}"  >
+                                    <f:selectItem itemLabel="Select One" itemValue=""  />
+                                    <f:selectItems value="#{cadastrarUsuarioView.perfis}" var="p" 
+                                                   itemLabel="#{p.descricao}" itemValue="#{p.id}" />
+                                </p:selectOneMenu></td>
+                        </tr>
+
+                    </table>
+                    <p:commandButton onclick="PF('confirmationAlt').show()" type="button" rendered="#{cadastrarUsuarioView.usuario.codigo eq 0}" value="Salvar" update="messages,:formUsuario" />
+                    <p:commandButton onclick="PF('confirmationAlt').show()" type="button" rendered="#{cadastrarUsuarioView.usuario.codigo gt 0}" value="Alterar" update="messages,:formUsuario"/>
+                    <p:commandButton onclick="PF('confirmationExc').show()" type="button" rendered="#{cadastrarUsuarioView.usuario.codigo gt 0}" value="Excluir" update="messages,:formUsuario"/>
+                    <p:commandButton actionListener="#{cadastrarUsuarioView.limparCampos}" rendered="#{cadastrarUsuarioView.usuario.codigo gt 0}" value="Limpar Campos" update="messages,:formUsuario"/>
+
+                </p:panel>
+                <p:dataTable id="usuarios" var="user" value="#{cadastrarUsuarioView.dataModel}" paginator="true" rows="10" 
+                             selection="#{cadastrarUsuarioView.selectedUsuario}"  selectionMode="single" rowKey="#{user.codigo}" >
+
+                    <p:ajax event="rowSelect" listener="#{cadastrarUsuarioView.onRowSelect}" global="false" update=":formUsuario:painelUsuario"/>
+                    <p:ajax event="rowUnselect" listener="#{cadastrarUsuarioView.onRowUnselect}" update=":formUsuario:painelUsuario" />
+
+
+                    <p:column headerText="Codigo">
+                        #{user.codigo}
+                    </p:column>
+
+                    <p:column headerText="Login">
+                        #{user.apelido}
+                    </p:column>
+                    <p:column headerText="Nome">
+                        #{user.nome}
+                    </p:column>
+                    <p:column headerText="E-mail">
+                        #{user.email}
+                    </p:column>
+
+                </p:dataTable>
+                <p:confirmDialog id="confirmDialogAlterar" message="Confirma a alteração dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationAlt">
+
+                        <p:commandButton id="confirmAlt" value="Sim" update="messages,:formUsuario" oncomplete="PF('confirmationAlt').hide()"
+                                         actionListener="#{cadastrarUsuarioView.salvar}" />
+                        <p:commandButton id="declineAlt" value="Não" onclick="PF('confirmationAlt').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+                    <p:confirmDialog id="confirmDialogExcluir" message="Confirma a exclusão dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationExc">
+
+                        <p:commandButton id="confirmExc" value="Sim" update="messages,:formUsuario" oncomplete="PF('confirmationExc').hide()"
+                                         actionListener="#{cadastrarUsuarioView.excluir}" />
+                        <p:commandButton id="declineExc" value="Não" onclick="PF('confirmationExc').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

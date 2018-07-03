@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+            <h:head>
+                <title>Cadastro de Menu</title>
+            </h:head>
+
+            <h:body> 
+                <h:form  prependId="false" id="formItemMenu">
+                    <p:growl id="messages" showDetail="true" autoUpdate="true" /> 
+                    <p:panel id="painelCadastro"  header="Cadastro de Itens de Menu">
+                        <table>
+                            <tr>
+                                <td>Menu:</td>
+                                <td><p:selectOneMenu value="#{cadastroMenuItemView.itemMenu.menu}" converter="#{menuConverter}">
+                                        <p:ajax id="evSelecionaMenu" update="menus,painelCadastro" listener="#{cadastroMenuItemView.onChangeMenu}" />
+                                        <f:selectItem itemLabel="Select One" />
+                                        <f:selectItems value="#{cadastroMenuItemView.menus}" var="menu" itemLabel="#{menu.nome}" itemValue="#{menu}"/>
+                                    </p:selectOneMenu></td>
+                            </tr>
+                            <tr>
+                                <td>Nome:</td>
+                                <td><h:inputHidden value="#{cadastroMenuItemView.itemMenu.id}"/>
+                                    <p:inputText value="#{cadastroMenuItemView.itemMenu.nome}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Resumo:
+                                </td>
+                                <td><p:inputTextarea value="#{cadastroMenuItemView.itemMenu.resumo}" cols="50" /></td>
+                            </tr>
+                            <tr>
+                                <td>Acao:
+                                </td>
+                                <td><p:inputText value="#{cadastroMenuItemView.itemMenu.acao}" size="50"/></td>
+                            </tr>
+                        </table>
+                        <p:commandButton onclick="PF('confirmationAlt').show()" type="button" rendered="#{cadastroMenuItemView.itemMenu.id eq 0}" value="Salvar" update=":formItemMenu:painelCadastro,:formItemMenu:menus,formItemMenu" />
+                        <p:commandButton onclick="PF('confirmationAlt').show()" type="button" rendered="#{cadastroMenuItemView.itemMenu.id gt 0}" value="Alterar" update=":formItemMenu:painelCadastro,:formItemMenu:menus,formItemMenu"/>
+                        <p:commandButton onclick="PF('confirmationExc').show()" type="button" rendered="#{cadastroMenuItemView.itemMenu.id gt 0}" value="Excluir" update=":formItemMenu:painelCadastro,:formItemMenu:menus,formItemMenu"/>
+                        <p:commandButton rendered="#{cadastroMenuItemView.itemMenu.id gt 0}" action="#{cadastroMenuItemView.limparCampos}" value="Limpar Campos" update="messages,:formItemMenu:painelCadastro"/>
+
+
+                    </p:panel>
+                    <p:dataTable id="menus" var="item" value="#{cadastroMenuItemView.itens}" paginator="true" rows="10" 
+                                 selection="#{cadastroMenuItemView.selectedItemMenu}" selectionMode="single" rowKey="#{item.id}"  >
+
+                        <p:ajax id="evSelecionaItemMenu" event="rowSelect" listener="#{cadastroMenuItemView.onRowSelect}" update=":formItemMenu:painelCadastro"/>
+                        <p:ajax id="evDeselecionaItemMenu" event="rowUnselect" listener="#{cadastroMenuItemView.onRowUnselect}" update=":formItemMenu:painelCadastro" />
+
+                        <p:column headerText="Codigo">
+                            #{item.id}
+                        </p:column>
+
+                        <p:column headerText="Nome">
+                            #{item.nome}
+                        </p:column>
+                        <p:column headerText="Menu">
+                            #{item.menu.nome}
+                        </p:column>
+                        <p:column headerText="Ação">
+                            #{item.acao}
+                        </p:column>
+                        <p:column headerText="Resumo">
+                            #{item.resumo}
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:confirmDialog id="confirmDialogAlterar" message="Confirma a alteração dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationAlt">
+
+                        <p:commandButton id="confirmAlt" value="Sim" update="messages,:formItemMenu:painelCadastro,:formItemMenu" oncomplete="PF('confirmationAlt').hide()"
+                                         actionListener="#{cadastroMenuItemView.salvar}" />
+                        <p:commandButton id="declineAlt" value="Não" onclick="PF('confirmationAlt').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+                    <p:confirmDialog id="confirmDialogExcluir" message="Confirma a exclusão dos Dados?"
+                                     header="Confirmar" severity="alert" widgetVar="confirmationExc">
+
+                        <p:commandButton id="confirmExc" value="Sim" update="messages,:formItemMenu:painelCadastro,:formItemMenu:menus,:formItemMenu:menus" oncomplete="PF('confirmationExc').hide()"
+                                         actionListener="#{cadastroMenuItemView.excluir}" />
+                        <p:commandButton id="declineExc" value="Não" onclick="PF('confirmationExc').hide()" type="button" /> 
+
+                    </p:confirmDialog>
+                </h:form>
+
+            </h:body>
+        </ui:define>
+    </ui:composition>
+</html>
+

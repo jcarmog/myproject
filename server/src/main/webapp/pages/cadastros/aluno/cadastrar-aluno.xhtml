@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -13,7 +13,7 @@ and open the template in the editor.
     <ui:composition template="/pages/template/principal.xhtml">
         <ui:define name="corpo">
             <h:head>
-                <title>Cadastro de Aluno</title>
+                <title>#{cadastrarAluno.nomeFuncao}</title>
                 <meta name="viewport" content="width=device-width"/>
             </h:head>
             <h:body>  
@@ -26,25 +26,31 @@ and open the template in the editor.
                                 <h:panelGrid columns="2" columnClasses="grid,grid">
                                     <h:panelGrid columns="2" columnClasses="label,value">
                                         <h:outputText value="CPF:" />
-                                        <p:inputMask id="cpf" value="#{cadastrarAluno.aluno.cpf}" mask="999.999.999-99" size="10"/>
+                                        <p:inputMask id="cpf" value="#{cadastrarAluno.aluno.cpf}" mask="999.999.999-99" size="15"/>
                                         <h:outputText value="Nome: " />
                                         <p:inputText value="#{cadastrarAluno.aluno.nome}" maxlength="100" size="50" />
                                         <h:outputText value="Email: " />
-                                        <p:inputText value="#{cadastrarAluno.aluno.email}" required="true" maxlength="100" size="30" validatorMessage="#{cadastrarAluno.aluno.email} não é válido." >
-                                            <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-                                        </p:inputText>
+                                        <p:inputText value="#{cadastrarAluno.aluno.email}" required="true" maxlength="100" size="30" />
                                         <h:outputText value="Data Nascimento: " />
                                         <p:calendar value="#{cadastrarAluno.aluno.dataNascimento}" size="10" />
-
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" columnClasses="label,value">
+                                        <p:outputLabel for="smEstado" value="UF: " />
+                                        <p:selectOneMenu id="smEstado" value="#{cadastrarAluno.aluno.uf}" converter="#{ufConverter}" >
+                                            <p:ajax listener="#{cadastrarAluno.buscarMunicipiosUF}" />
+                                            <f:selectItem itemLabel="Escolha..."/>
+                                            <f:selectItems value="#{cadastrarAluno.ufs}" var="uf" itemLabel="#{uf.sigla}" itemValue="#{uf}" />
+                                        </p:selectOneMenu>
+                                        
+                                        
                                         <h:outputText value="CEP:" />
                                         <p:inputMask id="cep" value="#{cadastrarAluno.aluno.cep}" mask="99.999-999" size="10"/>
-                                        <h:outputText value="Endereço:" />
+                                        <h:outputText value="EndereÃ§o:" />
                                         <p:inputText value="#{cadastrarAluno.aluno.logradouro}" maxlength="100" size="50"/>
-                                        <h:outputText value="Número: " />
+                                        <h:outputText value="NÃºmero: " />
                                         <p:inputText value="#{cadastrarAluno.aluno.numero}" maxlength="5" size="5"/>
                                         <h:outputText value="Complemento: " />
                                         <p:inputText value="#{cadastrarAluno.aluno.complemento}" />
-
                                     </h:panelGrid>
 
                                     <h:panelGrid columns="2" columnClasses="label,value">
@@ -66,24 +72,25 @@ and open the template in the editor.
                             <p:ajax event="rowSelect" listener="#{cadastrarAluno.onRowSelect}" update="pnlDados" />
                             <p:ajax event="rowUnselect" listener="#{cadastrarAluno.onRowUnselect}" update="pnlDados" />
 
-                            <p:column headerText="cpf" sortBy="#{aluno.cpf}">
+                            <p:column headerText="CPF" sortBy="#{aluno.cpf}">
                                 <h:outputText value="#{aluno.cpf}" converter="#{CPFCPNJConverter}" />
+                            </p:column>
+                            <p:column headerText="UF" sortBy="#{aluno.uf.nome}">
+                                <h:outputText value="#{aluno.uf.nome}"  />
                             </p:column>
                             <p:column headerText="Nome" sortBy="#{aluno.nome}">
                                 <h:outputText value="#{aluno.nome}"  />
                             </p:column>
-                            <p:column headerText="Telefone" sortBy="#{aluno.celular}">
-                                <h:outputText value="#{aluno.celular}"/>
-                            </p:column>
-
-                            <p:column headerText="Email">
-                                <h:outputText value="#{aluno.email}" />
-                            </p:column>
-
                             <p:column headerText="Data Nascimento">
                                 <h:outputText value="#{aluno.dataNascimento}" >
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </h:outputText>
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{aluno.email}" />
+                            </p:column>
+                            <p:column headerText="Telefone" sortBy="#{aluno.celular}">
+                                <h:outputText value="#{aluno.celular}"/>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

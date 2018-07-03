@@ -9,7 +9,6 @@
         <!-- provedor/implementacao do JPA -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/dbstrongerDS</jta-data-source>
-        <class>br.com.company.projetofitness.model.entities.Aluno</class>
         
         <properties>
             <!--  propriedades do hibernate -->

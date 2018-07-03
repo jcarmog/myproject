@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+
+            <h:form  prependId="false">
+                <p:growl id="messages" showDetail="true" autoUpdate="true" /> 
+                <p:panel header="Cadastro de Perfis de Usuários">
+                    <table>
+                        <tr>
+                            <td>Id:</td>
+                            <td><h:outputText value="#{cadastrarPerfilView.perfil.id}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Descrição:</td>
+                            <td><p:inputText value="#{cadastrarPerfilView.perfil.descricao}" /></td>
+                        </tr>
+
+                    </table>
+                    <p:commandButton action="#{cadastrarPerfilView.salvar}" value="Salvar" update="messages" />
+                </p:panel>
+                <p:dataTable id="perfil" var="perfil" value="#{cadastrarPerfilView.dataModel}" paginator="true" rows="10" 
+                             selection="#{cadastrarPerfilView.selectedPerfil}" selectionMode="single" rowKey="#{perfil.id}" >
+
+
+                    <p:column headerText="Codigo">
+                        #{perfil.id}
+                    </p:column>
+
+                    <p:column headerText="Descrição">
+                        #{perfil.descricao}
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

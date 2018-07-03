@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <ui:composition template="/template/principal.xhtml">
+        <ui:define name="corpo">
+
+            <h:form id="formUsuario"  prependId="false">
+                <p:growl id="messages" showDetail="true" autoUpdate="true"/> 
+                <p:panel  header="Meus Dados" id="painelUsuario">
+                    <table>
+                        <tr>
+                            <td class="font-bold">Nome:</td>
+                            <td><h:inputHidden value="#{minhaPaginaUsuarioView.usuarioLogado1.id}"/>
+                                <h:outputText value="#{minhaPaginaUsuarioView.usuarioLogado1.nome}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Login:</td>
+                            <td><h:outputText value="#{minhaPaginaUsuarioView.usuarioLogado1.apelido}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Email:</td>
+                            <td><h:outputText value="#{minhaPaginaUsuarioView.usuarioLogado1.email}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Perfil:</td>
+                            <td><h:outputText value="#{minhaPaginaUsuarioView.usuarioLogado1.perfil.descricao}" /></td>
+                        </tr>
+
+                    </table>
+                    <p:commandButton onclick="alterarSenha.show()" type="button" rendered="#{cadastrarUsuarioView.usuario.id eq 0}" value="Alterar Senha" update="messages,:formUsuario" />
+
+                </p:panel>
+
+                <p:dialog modal="true" widgetVar="alterarSenha" header="Alterar Senha" resizable="false">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Senha Atual" />
+                        <p:password  value="#{minhaPaginaUsuarioView.senhaAtual}"/>
+                        <h:outputLabel for="pwd1" value="Nova Senha: *" />  
+                        <p:password id="pwd1" value="#{minhaPaginaUsuarioView.novaSenha}" match="pwd2" label="Password 1" required="true"/>  
+
+                        <h:outputLabel for="pwd2" value="Confirma Senha: *" />  
+                        <p:password id="pwd2" value="#{minhaPaginaUsuarioView.novaSenha}" label="Password 2" required="true"/>  
+                    </p:panelGrid>
+                    <p:commandButton value="Confirma" actionListener="#{minhaPaginaUsuarioView.alterarSenha}" oncomplete="PF('alterarSenha').hide()" update="messages,:formUsuario"/>
+                </p:dialog>
+                <p:panel header="Minhas Permissões">
+                    <p:dataTable var="item" value="#{minhaPaginaUsuarioView.itemMenus}" >
+
+                        <p:column headerText="Codigo">
+                            #{item.id}
+                        </p:column>
+
+                        <p:column headerText="Menu">
+                           #{item.menu.nome} -> #{item.nome}
+                        </p:column>
+                        <p:column headerText="Resumo">
+                            #{item.resumo}
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

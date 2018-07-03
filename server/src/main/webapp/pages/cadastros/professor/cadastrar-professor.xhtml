@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/pages/template/principal.xhtml">
+        <ui:define name="corpo">
+            <h:head>
+                <title>#{cadastrarProfessor.nomeFuncao}</title>
+                <meta name="viewport" content="width=device-width"/>
+            </h:head>
+            <h:body>  
+                <h:form id="form" prependId="false">
+                    <p:panel id="pnlDados" >
+                        <p:growl id="msgs" autoUpdate="true" sticky="true" /> 
+                        <h:inputHidden value="#{cadastrarProfessor.professor.id}"/>
+                        <p:panelGrid columns="2" columnClasses="label,value">
+                            <p:panel>
+                                <h:panelGrid columns="2" columnClasses="grid,grid">
+                                    <h:panelGrid columns="2" columnClasses="label,value">
+                                        <h:outputText value="CPF:" />
+                                        <p:inputMask id="cpf" value="#{cadastrarProfessor.professor.cpf}" mask="999.999.999-99" size="15"/>
+                                        <h:outputText value="CREF: " />
+                                        <p:inputText value="#{cadastrarProfessor.professor.matriculaCref}" maxlength="20" size="15" />
+                                        <h:outputText value="Nome: " />
+                                        <p:inputText value="#{cadastrarProfessor.professor.nome}" maxlength="100" size="50" />
+                                        <h:outputText value="Email: " />
+                                        <p:inputText value="#{cadastrarProfessor.professor.email}" required="true" maxlength="100" size="30" />
+                                        <h:outputText value="Data Nascimento: " />
+                                        <p:calendar value="#{cadastrarProfessor.professor.dataNascimento}" size="10" />
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" columnClasses="label,value">
+                                        <p:outputLabel for="smEstado" value="UF: " />
+                                        <p:selectOneMenu id="smEstado" value="#{cadastrarProfessor.professor.uf}" converter="#{ufConverter}" >
+                                            <p:ajax  listener="#{cadastrarProfessor.buscarMunicipiosUF}" />
+                                            <f:selectItem itemLabel="Escolha..."/>
+                                            <f:selectItems value="#{cadastrarProfessor.ufs}" var="uf" itemLabel="#{uf.sigla}" itemValue="#{uf}" />
+                                        </p:selectOneMenu>
+                                        
+                                        <h:outputText value="CEP:" />
+                                        <p:inputMask id="cep" value="#{cadastrarProfessor.professor.cep}" mask="99.999-999" size="10"/>
+                                        <h:outputText value="Endereço:" />
+                                        <p:inputText value="#{cadastrarProfessor.professor.logradouro}" maxlength="100" size="50"/>
+                                        <h:outputText value="Número: " />
+                                        <p:inputText value="#{cadastrarProfessor.professor.numero}" maxlength="5" size="5"/>
+                                        <h:outputText value="Complemento: " />
+                                        <p:inputText value="#{cadastrarProfessor.professor.complemento}" />
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label,value">
+                                        <h:outputText value="Telefone: " />
+                                        <p:inputMask id="telefone" value="#{cadastrarProfessor.professor.telefone}" mask="(99) 9999-9999"/>
+                                        <h:outputText value="Celular: " />
+                                        <p:inputMask id="celular" value="#{cadastrarProfessor.professor.celular}" mask="(99) 99999-9999"/>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </p:panel>
+                            <f:facet name="footer">
+                                <p:commandButton action="#{cadastrarProfessor.salvar()}" value="Salvar"  update="pnlDados,dtAlunos" />
+                                <p:commandButton action="#{cadastrarProfessor.excluir()}" rendered="#{not empty cadastrarProfessor.professor and cadastrarProfessor.professor.id gt 0}" value="Excluir"  update="pnlDados,dtAlunos" />
+                                <p:commandButton action="#{cadastrarProfessor.limparCampos()}"  rendered="#{not empty cadastrarProfessor.professor and cadastrarProfessor.professor.id gt 0}"  value="Limpar Campos"  update="pnlDados,dtAlunos" />
+                            </f:facet>
+                        </p:panelGrid>
+                        <br/>
+                        <p:dataTable id="dtAlunos" var="professor" value="#{cadastrarProfessor.professores}" selectionMode="single" selection="#{cadastrarProfessor.selectedProfessor}" rowKey="#{professor.id}">
+                            <p:ajax event="rowSelect" listener="#{cadastrarProfessor.onRowSelect}" update="pnlDados" />
+                            <p:ajax event="rowUnselect" listener="#{cadastrarProfessor.onRowUnselect}" update="pnlDados" />
+
+                            <p:column headerText="CPF" sortBy="#{professor.cpf}">
+                                <h:outputText value="#{professor.cpf}" converter="#{CPFCPNJConverter}" />
+                            </p:column>
+                            <p:column headerText="UF" sortBy="#{professor.uf.nome}">
+                                <h:outputText value="#{professor.uf.nome}"  />
+                            </p:column>
+                            <p:column headerText="Nome" sortBy="#{professor.nome}">
+                                <h:outputText value="#{professor.nome}"  />
+                            </p:column>
+                            <p:column headerText="Data Nascimento">
+                                <h:outputText value="#{professor.dataNascimento}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{professor.email}" />
+                            </p:column>
+                            <p:column headerText="Telefone" sortBy="#{professor.celular}">
+                                <h:outputText value="#{professor.celular}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+
+            </h:body>
+        </ui:define>
+    </ui:composition>
+</html>
