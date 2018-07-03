@@ -140,6 +140,42 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <groupId>com.webcohesion.enunciate</groupId>
+                <artifactId>enunciate-maven-plugin</artifactId>
+                <version>2.11.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>docs</goal>
+                        </goals>
+                        <configuration>
+                            <!-- the directory where to put the docs -->
+                            <docsDir>${project.build.directory}/docs</docsDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swaggerhub-maven-plugin</artifactId>
+                <version>1.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>download</goal>
+                        </goals>
+                        <configuration>
+                            <api>strongerAPI</api>
+                            <owner>jcarmog</owner>
+                            <version>1.0</version>
+                            <outputFile>target/StrongerAPI.json</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <repositories>
