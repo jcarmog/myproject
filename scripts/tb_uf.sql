@@ -4,6 +4,7 @@ LIMIT 0, 1000
 
 -- Date: 2018-06-29 14:58
 */
+use dbstronger;
 INSERT INTO `tb_uf` (`id`,`nome`,`sigla`) VALUES (1,'DISTRITO FEDERAL','DF');
 INSERT INTO `tb_uf` (`id`,`nome`,`sigla`) VALUES (2,'RONDONIA','RO');
 INSERT INTO `tb_uf` (`id`,`nome`,`sigla`) VALUES (3,'ACRE','AC');

@@ -4,6 +4,7 @@ LIMIT 0, 10000
 
 -- Date: 2018-06-29 14:59
 */
+use dbstronger;
 INSERT INTO `tb_cidade` (`id`,`nome`,`uf`,`cod_munic_ibge`) VALUES (1,'TARUMA',22,'07267');
 INSERT INTO `tb_cidade` (`id`,`nome`,`uf`,`cod_munic_ibge`) VALUES (2,'TARUMIRIM',19,'05367');
 INSERT INTO `tb_cidade` (`id`,`nome`,`uf`,`cod_munic_ibge`) VALUES (3,'TASSO FRAGOSO',10,'00933');
