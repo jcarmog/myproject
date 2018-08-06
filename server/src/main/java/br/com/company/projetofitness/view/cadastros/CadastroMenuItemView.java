@@ -55,7 +55,7 @@ public class CadastroMenuItemView extends PrincipalView {
     public void salvar() {
 
         try {
-            itemMenu.setMenu(menuService.retornarPorId(Integer.parseInt(idMenuSelected)));
+            itemMenu.setMenu(selectedMenu);
             if (itemMenu.getId() == 0) {
 
                 itemMenuService.salvar(itemMenu);
@@ -104,13 +104,12 @@ public class CadastroMenuItemView extends PrincipalView {
         selectedMenu = menuService.retornarPorId(itemMenu.getMenu().getId());
         itens = itemMenuService.retornaTodosPorMenu(itemMenu.getMenu().getId());
         itemMenu = new ItemMenu();
+        itemMenu.setMenu(selectedMenu);
     }
 
     public void onRowSelect(SelectEvent event) {
         if (event.getObject() != null) {
-            setSelectedItemMenu((ItemMenu) event.getObject());
             setItemMenu((ItemMenu) event.getObject());
-            setIdMenuSelected(String.valueOf(getSelectedItemMenu().getMenu().getId()));
         }
         //idMenuSelected = String.valueOf(getSelectedItemMenu().getId());
     }

@@ -38,6 +38,7 @@ public class ItemMenuService extends AbstractService<ItemMenu> {
     @Override
     public ItemMenu salvar(ItemMenu novo){
         em.getTransaction().begin();
+        em.flush();
         em.persist(novo);
         em.getTransaction().commit();
         return null;
